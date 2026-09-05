@@ -45,7 +45,7 @@ jobs:
             Do not create or modify any other file.
           claude_args: |
             --allowedTools "Write"
-            --max-turns 5
+            --max-turns 20
 
       - name: Install pandoc
         run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends pandoc
