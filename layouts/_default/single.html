@@ -6,7 +6,7 @@
 {{ partial "style.html" . }}
 </head>
 <body>
-<p><a href="{{ "/" | relURL }}">&larr; all reports</a></p>
+<p><a href="{{ .Site.Home.RelPermalink }}">&larr; all reports</a></p>
 <h1>{{ .Title }}</h1>
 <p><time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006-01-02 15:04 MST" }}</time></p>
 {{ .Content }}
