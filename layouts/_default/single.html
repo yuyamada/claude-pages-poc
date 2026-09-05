@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{ .Title }}</title>
+{{ partial "style.html" . }}
+</head>
+<body>
+<p><a href="{{ "/" | relURL }}">&larr; all reports</a></p>
+<h1>{{ .Title }}</h1>
+<p><time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006-01-02 15:04 MST" }}</time></p>
+{{ .Content }}
+{{ if .Store.Get "hasChart" }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script>
+document.querySelectorAll('script[data-chart-for]').forEach(function (el) {
+  var canvas = document.getElementById(el.getAttribute('data-chart-for'));
+  new Chart(canvas, JSON.parse(el.textContent));
+});
+</script>
+{{ end }}
+</body>
+</html>

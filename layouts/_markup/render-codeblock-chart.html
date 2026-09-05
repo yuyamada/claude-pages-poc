@@ -1,0 +1,4 @@
+{{ .Page.Store.Set "hasChart" true }}
+{{ $id := printf "chart-%d" .Ordinal }}
+<canvas id="{{ $id }}"></canvas>
+<script type="application/json" data-chart-for="{{ $id }}">{{ .Inner | safeJS }}</script>

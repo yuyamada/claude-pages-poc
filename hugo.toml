@@ -1,0 +1,6 @@
+baseURL = "https://yuyamada.github.io/claude-pages-poc/"
+title = "Claude Code Action + GitHub Pages PoC — Reports"
+locale = "en-us"
+
+[markup.goldmark.renderer]
+  unsafe = false
