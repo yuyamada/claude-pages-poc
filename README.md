@@ -11,10 +11,11 @@ need rebasing against your own work.
 1. Trigger the `Generate and Deploy to Pages` workflow manually (Actions tab → Run workflow, or `gh workflow run`).
 2. The `generate` job checks out the `pages` branch (not `main`).
 3. A shell step computes the current UTC timestamp.
-4. Claude Code Action runs in automation mode and writes a new dated report to `site/reports/<timestamp>.html`. It only ever writes that one file.
-5. A plain shell step deterministically rebuilds `site/index.html` by listing every file under `site/reports/`, newest first. No LLM involved — it's just a directory listing, so a script is more reliable than asking Claude to enumerate files itself.
-6. Another shell step commits and pushes those changes to `pages`, so report history persists across runs.
-7. `actions/upload-pages-artifact` uploads the full `site/` directory (all past reports plus the index), and the `deploy` job publishes it via `actions/deploy-pages`.
+4. Claude Code Action runs in automation mode and writes a new dated report to `reports/<timestamp>.md`, in plain Markdown. It only ever writes that one file. This is the only file this workflow commits back to git — kept as Markdown because it's readable and diffable in a way generated HTML isn't.
+5. A shell step renders every `reports/*.md` file to `_site/reports/*.html` with `pandoc -f markdown-raw_html --sandbox`, then deterministically rebuilds `_site/index.html` by listing them, newest first. `_site/` is a build output, gitignored, and never committed — it's fully derived from the committed Markdown every run.
+   - `-f markdown-raw_html` disables pandoc's raw-HTML passthrough, so any literal `<script>` or other HTML tags Claude might emit inside the Markdown are rendered as inert text, not executed. This matters because an LLM-authored `<script>` tag would otherwise run in visitors' browsers with no review step in this pipeline.
+6. Another shell step commits and pushes the new `reports/*.md` file to `pages`, so report history persists across runs.
+7. `actions/upload-pages-artifact` uploads `_site/` (rendered HTML for every report, past and new, plus the index), and the `deploy` job publishes it via `actions/deploy-pages`.
 
 Pages is configured with `build_type: workflow` (Settings → Pages → Build and deployment → Source: GitHub Actions), which deploys whatever `deploy-pages` is given regardless of branch — the `pages` branch here is purely a storage mechanism for the workflow's own state, unrelated to how Pages picks up content.
 
