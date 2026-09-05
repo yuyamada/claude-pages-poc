@@ -23,6 +23,7 @@ jobs:
       - uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
             Create a single static HTML file at site/index.html.
             It must be a minimal, self-contained page (inline CSS only,
