@@ -43,7 +43,7 @@ jobs:
             ${{ steps.ts.outputs.value }} (UTC). Plain Markdown only: no
             raw HTML tags, no script tags.
 
-            Optionally, include one chart: a fenced code block labeled
+            Include one chart: a fenced code block labeled
             `chart` whose content is a single-line JSON object matching
             Chart.js's constructor config (top-level keys: type, data,
             options — e.g. {"type":"bar","data":{"labels":["A","B"],
