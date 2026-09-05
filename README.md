@@ -17,6 +17,18 @@ need rebasing against your own work.
 6. Another shell step commits and pushes the new `reports/*.md` file to `pages`, so report history persists across runs.
 7. `actions/upload-pages-artifact` uploads `_site/` (rendered HTML for every report, past and new, plus the index), and the `deploy` job publishes it via `actions/deploy-pages`.
 
+### Charts
+
+Claude may optionally include one chart per report as a fenced code block
+labeled `chart`, containing only a JSON object shaped like a Chart.js
+config (`type`, `data`, `options` — no JavaScript). A pandoc Lua filter
+(written inline in the workflow) turns that code block into a bare
+`<canvas data-chart="...">` element, and appends one fixed, human-authored
+`<script>` block (Chart.js from a CDN + a few lines that call
+`new Chart(el, JSON.parse(...))`) once per page, only if a chart was
+found. Claude never writes or controls any executable JavaScript — only
+the chart's data.
+
 Pages is configured with `build_type: workflow` (Settings → Pages → Build and deployment → Source: GitHub Actions), which deploys whatever `deploy-pages` is given regardless of branch — the `pages` branch here is purely a storage mechanism for the workflow's own state, unrelated to how Pages picks up content.
 
 ## One-time setup
